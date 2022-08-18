@@ -9,6 +9,7 @@ import android.app.NotificationManager;
 import android.os.IBinder;
 import android.os.Bundle;
 import android.annotation.TargetApi;
+import java.lang.SecurityException;
 
 public class ForegroundService extends Service {
     @Override
@@ -29,9 +30,13 @@ public class ForegroundService extends Service {
     private void startPluginForegroundService(Bundle extras) {
         Context context = getApplicationContext();
 
-        // Delete notification channel if it already exists
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.deleteNotificationChannel("foreground.service.channel");
+        try {
+            // Delete notification channel if it already exists
+            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            manager.deleteNotificationChannel("foreground.service.channel");
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
 
         // Get notification channel importance
         Integer importance;

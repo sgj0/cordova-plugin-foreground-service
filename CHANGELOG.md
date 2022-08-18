@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.4 - 18-08-2022
+
+- SecurityException handled on channel deletion
+
 ## 1.1.3 - 17-12-2019
 
 - Added FOREGROUND_SERVICE permission

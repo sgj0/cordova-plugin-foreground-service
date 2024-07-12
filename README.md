@@ -1,6 +1,6 @@
 # cordova-plugin-foreground-service [![npm version](https://badge.fury.io/js/cordova-plugin-foreground-service.svg)](https://badge.fury.io/js/cordova-plugin-foreground-service)
 
-***NOTE***: This plugin does not on its own allow the user to execute javascript while the app is in the background. This must be accompanied by another plugin that will create a background process that will give the application background cycles. This plugin mainly exists to solve the problem outlined [here](https://developer.android.com/about/versions/oreo/background#services). An app will have restricted background processing if it is not considered a "foreground app" for android API 26+ and will prevent background pluggins from functioning properly. With this plugin your application will be a foreground app and let your background services run properly. This plugin may also help with [android doze](https://developer.android.com/training/monitoring-device-state/doze-standby#understand_app_standby) where an application may not run in the background unless it also has a foreground process. Do not expect this plugin on its own to allow your app to execute javascript while in the background.
+**_NOTE_**: This plugin does not on its own allow the user to execute javascript while the app is in the background. This must be accompanied by another plugin that will create a background process that will give the application background cycles. This plugin mainly exists to solve the problem outlined [here](https://developer.android.com/about/versions/oreo/background#services). An app will have restricted background processing if it is not considered a "foreground app" for android API 26+ and will prevent background pluggins from functioning properly. With this plugin your application will be a foreground app and let your background services run properly. This plugin may also help with [android doze](https://developer.android.com/training/monitoring-device-state/doze-standby#understand_app_standby) where an application may not run in the background unless it also has a foreground process. Do not expect this plugin on its own to allow your app to execute javascript while in the background.
 
 ---
 
@@ -13,7 +13,7 @@ This plugin allows for android devices to continue running services in the backg
 - cordova-android version >= 7.0.0
 - android-sdk api >= 26
 
-***NOTE: Using cordova version >= 8.0.0 is recommended.***
+**_NOTE: Using cordova version >= 8.0.0 is recommended._**
 
 ---
 
@@ -76,11 +76,11 @@ The notification id is a customizable integer that is used to reference the noti
 
 Notification importance dictates how the notification is initially presented:
 
-Value | Importance | Description
---- | --- | ---
-1|IMPORTANCE_LOW|Does not make a sound or heads-up display. (Default)
-2|IMPORTANCE_DEFAULT|Makes a sound, but no heads-up display.
-3|IMPORTANCE_HIGH|Makes a sound and heads-up display.
+| Value | Importance         | Description                                          |
+| ----- | ------------------ | ---------------------------------------------------- |
+| 1     | IMPORTANCE_LOW     | Does not make a sound or heads-up display. (Default) |
+| 2     | IMPORTANCE_DEFAULT | Makes a sound, but no heads-up display.              |
+| 3     | IMPORTANCE_HIGH    | Makes a sound and heads-up display.                  |
 
 ---
 

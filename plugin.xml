@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="cordova-plugin-foreground-service" version="1.1.4">
+<plugin
+  xmlns="http://apache.org/cordova/ns/plugins/1.0"
+  id="cordova-plugin-foreground-service"
+  version="1.1.5"
+>
   <name>Cordova Foreground Service</name>
   <description>Foreground service with ongoing notification.</description>
   <license>MIT</license>
@@ -10,18 +14,32 @@
     <clobbers target="cordova.plugins.foregroundService" />
   </js-module>
   <platform name="android">
-    <source-file src="src/ForegroundPlugin.java" target-dir="src/com/davidbriglio/foreground" />
-    <source-file src="src/ForegroundService.java" target-dir="src/com/davidbriglio/foreground" />
+    <source-file
+      src="src/ForegroundPlugin.java"
+      target-dir="net/sgj0/cordova/plugin/foreground"
+    />
+    <source-file
+      src="src/ForegroundService.java"
+      target-dir="net/sgj0/cordova/plugin/foreground"
+    />
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
-      <service android:name="com.davidbriglio.foreground.ForegroundService" android:stopWithTask="true" />
+      <service
+        android:name="net.sgj0.cordova.plugin.foreground.ForegroundService"
+        android:stopWithTask="true"
+      />
         </config-file>
         <config-file target="config.xml" parent="/*">
             <feature name="ForegroundPlugin">
-                <param name="android-package" value="com.davidbriglio.foreground.ForegroundPlugin" />
+                <param
+          name="android-package"
+          value="net.sgj0.cordova.plugin.foreground.ForegroundPlugin"
+        />
             </feature>
         </config-file>
         <config-file target="AndroidManifest.xml" parent="/*">
-            <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+            <uses-permission
+        android:name="android.permission.FOREGROUND_SERVICE"
+      />
         </config-file>
     </platform>
 

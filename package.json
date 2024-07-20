@@ -3,15 +3,12 @@
   "version": "1.1.5",
   "description": "Foreground service with ongoing notification.",
   "cordova": {
-    "id": "cordova-plugin-foreground-service",
+    "id": "net.sgj0.cordova.plugin.foreground",
     "platforms": [
       "android"
     ]
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sgj0/cordova-plugin-foreground-service"
-  },
+  "repository": "github:sgj0/cordova-plugin-foreground-service",
   "keywords": [
     "cordova",
     "android",
@@ -21,12 +18,6 @@
     "ecosystem:cordova",
     "cordova-android"
   ],
-  "scripts": {
-    "prettier": "prettier --write ."
-  },
-  "devDependencies": {
-    "prettier": "^3.3.2"
-  },
   "author": "David Briglio",
   "license": "MIT"
 }

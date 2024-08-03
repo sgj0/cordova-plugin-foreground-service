@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.6 - 03-08-2024
+
+- Support Android 34
+
 ## 1.1.4 - 18-08-2022
 
 - SecurityException handled on channel deletion

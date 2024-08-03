@@ -3,7 +3,7 @@
   xmlns="http://www.phonegap.com/ns/plugins/1.0"
   xmlns:android="http://schemas.android.com/apk/res/android"
   id="net.sgj0.cordova.plugin.foreground"
-  version="1.1.6"
+  version="1.1.7"
 >
 	<name>Cordova Foreground Service</name>
 	<description>Foreground service with ongoing notification.</description>
@@ -19,8 +19,8 @@
 			<service
 				android:name="net.sgj0.cordova.plugin.foreground.ForegroundService"
 				android:stopWithTask="true"
-        android:exported="false"
-        android:foregroundServiceType="mediaPlayback"
+				android:exported="false"
+				android:foregroundServiceType="mediaPlayback"
 			/>
 		</config-file>
 		<config-file target="config.xml" parent="/*">
@@ -33,7 +33,7 @@
 		</config-file>
 		<config-file target="AndroidManifest.xml" parent="/*">
 			<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-			<uses-permission android:name="android.permission.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK" />
+			<uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 		</config-file>
 		<js-module src="www/foreground.js" name="ForegroundService">
 			<clobbers target="cordova.plugins.foregroundService" />

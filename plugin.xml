@@ -34,6 +34,7 @@
 		<config-file target="AndroidManifest.xml" parent="/*">
 			<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 			<uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+			<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 		</config-file>
 		<js-module src="www/foreground.js" name="ForegroundService">
 			<clobbers target="cordova.plugins.foregroundService" />

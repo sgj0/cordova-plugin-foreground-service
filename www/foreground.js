@@ -1,7 +1,10 @@
-var exec = require("cordova/exec");
+const exec = require("cordova/exec");
 
 module.exports = {
-  start: function (title, text, icon, importance, notificationId) {
+  askPermissions: () => {
+    exec(null, null, "ForegroundPlugin", "askPermissions", []);
+  },
+  start: (title, text, icon, importance, notificationId) => {
     exec(null, null, "ForegroundPlugin", "start", [
       title || "",
       text || "",
@@ -10,7 +13,7 @@ module.exports = {
       notificationId || "",
     ]);
   },
-  stop: function () {
+  stop: () => {
     exec(null, null, "ForegroundPlugin", "stop", []);
   },
 };

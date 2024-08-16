@@ -1,8 +1,10 @@
 package net.sgj0.cordova.plugin.foreground;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
@@ -17,11 +19,29 @@ public class ForegroundPlugin extends CordovaPlugin {
     final JSONArray args,
     final CallbackContext command
   ) throws JSONException {
-    if (android.os.Build.VERSION.SDK_INT >= 26) {
-      Activity activity = cordova.getActivity();
-      Intent intent = new Intent(activity, ForegroundService.class);
+    if (android.os.Build.VERSION.SDK_INT < 26) {
+      command.error("Require SDK 26 or higher.");
+      return false;
+    }
 
-      if (action.equals("start")) {
+    Activity activity = cordova.getActivity();
+    Intent intent = new Intent(activity, ForegroundService.class);
+
+    switch (action) {
+      case "askPermissions":
+        // Tell the service we want permissions
+        intent.setAction("askPermissions");
+
+        // Ask permissions
+        if (android.os.Build.VERSION.SDK_INT >= 33) {
+          cordova.requestPermission(
+            this,
+            0,
+            Manifest.permission.POST_NOTIFICATIONS
+          );
+        }
+        break;
+      case "start":
         // Tell the service we want to start it
         intent.setAction("start");
 
@@ -35,13 +55,15 @@ public class ForegroundPlugin extends CordovaPlugin {
 
         // Start the service
         activity.getApplicationContext().startForegroundService(intent);
-      } else if (action.equals("stop")) {
+        break;
+      case "stop":
         // Tell the service we want to stop it
         intent.setAction("stop");
 
         // Stop the service
         activity.getApplicationContext().startService(intent);
-      }
+        break;
+      default:
     }
 
     command.success();

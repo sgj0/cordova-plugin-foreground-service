@@ -1,19 +1,25 @@
 const exec = require("cordova/exec");
 
 module.exports = {
-  askPermissions: () => {
-    exec(null, null, "ForegroundPlugin", "askPermissions", []);
+  askPermissions: (success, error) => {
+    exec(
+      success || null,
+      error || null,
+      "ForegroundPlugin",
+      "askPermissions",
+      [],
+    );
   },
-  start: (title, text, icon, importance, notificationId) => {
-    exec(null, null, "ForegroundPlugin", "start", [
-      title || "",
-      text || "",
-      icon || "",
-      importance || "1",
-      notificationId || "",
+  start: (title, text, icon, importance, notificationId, success, error) => {
+    exec(success || null, error || null, "ForegroundPlugin", "start", [
+      title ? String(title) : "",
+      text ? String(text) : "",
+      icon ? String(icon) : "",
+      importance ? String(importance) : "1",
+      notificationId ? String(notificationId) : "",
     ]);
   },
-  stop: () => {
-    exec(null, null, "ForegroundPlugin", "stop", []);
+  stop: (success, error) => {
+    exec(success || null, error || null, "ForegroundPlugin", "stop", []);
   },
 };

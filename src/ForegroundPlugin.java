@@ -3,7 +3,9 @@ package net.sgj0.cordova.plugin.foreground;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -12,6 +14,9 @@ import org.json.JSONException;
 
 public class ForegroundPlugin extends CordovaPlugin {
 
+  private static final int REQUEST_POST_NOTIFICATIONS = 1001;
+  private CallbackContext permissionCallback;
+
   @Override
   @TargetApi(26)
   public boolean execute(
@@ -19,54 +24,80 @@ public class ForegroundPlugin extends CordovaPlugin {
     final JSONArray args,
     final CallbackContext command
   ) throws JSONException {
-    if (android.os.Build.VERSION.SDK_INT < 26) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
       command.error("Require SDK 26 or higher.");
-      return false;
+      return true;
     }
 
     Activity activity = cordova.getActivity();
-    Intent intent = new Intent(activity, ForegroundService.class);
+    Context context = activity.getApplicationContext();
 
     switch (action) {
       case "askPermissions":
-        // Tell the service we want permissions
-        intent.setAction("askPermissions");
-
-        // Ask permissions
-        if (android.os.Build.VERSION.SDK_INT >= 33) {
-          cordova.requestPermission(
-            this,
-            0,
-            Manifest.permission.POST_NOTIFICATIONS
-          );
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+          if (cordova.hasPermission(Manifest.permission.POST_NOTIFICATIONS)) {
+            command.success();
+          } else {
+            this.permissionCallback = command;
+            cordova.requestPermission(
+              this,
+              REQUEST_POST_NOTIFICATIONS,
+              Manifest.permission.POST_NOTIFICATIONS
+            );
+          }
+        } else {
+          command.success();
         }
-        break;
+        return true;
+
       case "start":
-        // Tell the service we want to start it
-        intent.setAction("start");
+        Intent startIntent = new Intent(context, ForegroundService.class);
+        startIntent.setAction("start");
+        startIntent
+          .putExtra("title", args.optString(0, ""))
+          .putExtra("text", args.optString(1, ""))
+          .putExtra("icon", args.optString(2, ""))
+          .putExtra("importance", args.optString(3, "1"))
+          .putExtra("id", args.optString(4, ""));
 
-        // Pass the notification title/text/icon to the service
-        intent
-          .putExtra("title", args.getString(0))
-          .putExtra("text", args.getString(1))
-          .putExtra("icon", args.getString(2))
-          .putExtra("importance", args.getString(3))
-          .putExtra("id", args.getString(4));
+        try {
+          context.startForegroundService(startIntent);
+          command.success();
+        } catch (Exception e) {
+          command.error(e.getMessage());
+        }
+        return true;
 
-        // Start the service
-        activity.getApplicationContext().startForegroundService(intent);
-        break;
       case "stop":
-        // Tell the service we want to stop it
-        intent.setAction("stop");
+        Intent stopIntent = new Intent(context, ForegroundService.class);
+        context.stopService(stopIntent);
+        command.success();
+        return true;
 
-        // Stop the service
-        activity.getApplicationContext().startService(intent);
-        break;
       default:
+        return false;
     }
+  }
 
-    command.success();
-    return true;
+  @Override
+  public void onRequestPermissionResult(
+    int requestCode,
+    String[] permissions,
+    int[] grantResults
+  ) throws JSONException {
+    if (
+      requestCode == REQUEST_POST_NOTIFICATIONS &&
+      this.permissionCallback != null
+    ) {
+      if (
+        grantResults.length > 0 &&
+        grantResults[0] == PackageManager.PERMISSION_GRANTED
+      ) {
+        this.permissionCallback.success();
+      } else {
+        this.permissionCallback.error("POST_NOTIFICATIONS permission denied.");
+      }
+      this.permissionCallback = null;
+    }
   }
 }
